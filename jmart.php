@@ -79,6 +79,16 @@ function productStore($data) {
     return $data;
 }
 
+function jmart_list( $atts ) {
+    $a = shortcode_atts( array(
+        'foo' => 'something',
+        'bar' => 'something else',
+    ), $atts );
+
+    return "foo = {$a['foo']}";
+}
+add_shortcode( 'bartag', 'jmart_list' );
+
 // Find for product by ID
 function findProduct($id) {
     global $wpdb;
