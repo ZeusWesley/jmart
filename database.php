@@ -2,8 +2,6 @@
 
 global $wpdb;
 
-$env = parse_ini_file('plugin.ini');
-
 if($env['PLUGIN_STATUS'] == 1)
     return false;
 else {
