@@ -10,7 +10,7 @@
  * License: Qualquer uma ai, por enquanto!
  *
  */
-
+require ""
 function startBagaca() {}
 
 add_action('init', 'startBagaca');
@@ -67,8 +67,7 @@ function productStore($data) {
     if($existent)
         throw new Exception('Produto já cadastrado!');
 
-    $wpdb->insert('jmart_products',
-        [
+    $wpdb->insert('jmart_products', [
             'hotmart_id'    => $data->id,
             'name'          => $data->name,
             'category'      => $data->category->name,
@@ -79,21 +78,24 @@ function productStore($data) {
     return $data;
 }
 
-function jmart_list( $atts ) {
-    $a = shortcode_atts( array(
-        'foo' => 'something',
-        'bar' => 'something else',
-    ), $atts );
+function products_list( $atts ) {
+    extract( shortcode_atts(['category' => 'any'], $atts, 'multilink'));
 
-    return "foo = {$a['foo']}";
+    return displayProducts($category);
 }
-add_shortcode( 'bartag', 'jmart_list' );
+add_shortcode( 'products', 'products_list' );
+
+function displayProducts($category) {
+    global $wpdb;
+    $products = $wpdb->get_results("SELECT * FROM jmart_products WHERE category LIKE '%{$category}%'");
+    include("dash.php");
+}
 
 // Find for product by ID
 function findProduct($id) {
     global $wpdb;
-    $configs = $wpdb->get_results("SELECT * FROM jmart_products WHERE hotmart_id = '{$id}'");
-    return $configs[0];
+    $product = $wpdb->get_results("SELECT * FROM jmart_products WHERE hotmart_id = '{$id}'");
+    return $product[0];
 }
 
 // Get config plugin by key name
