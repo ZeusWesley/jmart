@@ -10,7 +10,7 @@
  * License: Qualquer uma ai, por enquanto!
  *
  */
-//require ""
+include "styles.php";
 function startBagaca()
 {
 }
@@ -87,8 +87,6 @@ function productStore($data)
     return $data;
 }
 
-
-
 // Method called by registered routed for store product
 function jmart_user_authenticate()
 {
@@ -100,7 +98,7 @@ function jmart_user_authenticate()
     if (isset($_GET['code'])) {
 
         $code = $_GET['code'];
-        $redirect_uri = 'http://ba5779e6.ngrok.io/index.php/ola-mundo';
+        $redirect_uri = 'http://2bc4ae0a.ngrok.io';
         $client_id = config('CLIENT_ID')->value;
         $basic = config('BASIC')->value;
 
@@ -114,7 +112,6 @@ function jmart_user_authenticate()
 
         $parts = explode('%', $data->access_token);
 
-
         foreach ($parts as $key => $string){
             $_SESSION['access_token'][] = $string;
         }
@@ -122,9 +119,8 @@ function jmart_user_authenticate()
 }
 add_action('init', 'jmart_user_authenticate');
 
-
 function getToken() {
-    return implode('%',$_SESSION['access_token']);
+    return implode('%', $_SESSION['access_token']);
 }
 
 // Store product on Database after check if there exists
@@ -164,7 +160,19 @@ function displayProducts($category)
     include("products.php");
 }
 
-// Find for product by ID
+
+
+
+
+function topBar()
+{
+    return include("topBar.php");
+}
+
+add_shortcode('top_bar', 'topBar');
+
+
+// Find for product by IDl
 function findProduct($id)
 {
     global $wpdb;
@@ -186,7 +194,7 @@ function get_user() {
     $request = wp_remote_get('https://api-hot-connect.hotmart.com/user/rest/v2/me', $header);
     $user = wp_remote_retrieve_body($request);
 
-    echo "<pre>";
-    var_dump($user);exit;
-    echo "</pre>";
+    return json_decode($user);
 }
+
+include "scripts.php";
