@@ -4,16 +4,13 @@
  *
  * Plugin name: Plugin Hotmart
  * Plugins uri: http://jmart.com.br
- * Description: ...
+ * Description: Plugin de integração com a hotmart, para listagem de produtos
  * Version: 1.0
  * Author: Eliseu Wesley
  * License: Qualquer uma ai, por enquanto!
- *
- */
-include "styles.php";
-function startBagaca()
-{
-}
+*
+*/
+function startBagaca() {}
 
 add_action('init', 'startBagaca');
 
@@ -96,52 +93,58 @@ function jmart_user_authenticate()
     session_start();
 
     if (isset($_GET['code'])) {
+        try {
+            $code = $_GET['code'];
+            $redirect_uri = site_url();
+            $client_id = config('CLIENT_ID')->value;
+            $basic = config('BASIC')->value;
 
-        $code = $_GET['code'];
-        $redirect_uri = 'http://2bc4ae0a.ngrok.io';
-        $client_id = config('CLIENT_ID')->value;
-        $basic = config('BASIC')->value;
+            $header = ['headers' => ['Authorization' => 'Basic ' . $basic]];
 
-        $header = ['headers' => ['Authorization' => 'Basic ' . $basic]];
+            $response = wp_remote_post('https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=authorization_code&code=' . $code
+                . '&client_id=' . $client_id . '&redirect_uri=' . $redirect_uri, $header);
 
-        $response = wp_remote_post('https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=authorization_code&code=' . $code
-            . '&client_id=' . $client_id . '&redirect_uri=' . $redirect_uri, $header);
+            $request = wp_remote_retrieve_body($response);
+            $data = json_decode($request);
 
-        $request = wp_remote_retrieve_body($response);
-        $data = json_decode($request);
+            $parts = str_split($data->access_token, 128);
 
-        $parts = explode('%', $data->access_token);
+            foreach ($parts as $key => $string){
+                $_SESSION['access_token'][] = $string;
+            }
 
-        foreach ($parts as $key => $string){
-            $_SESSION['access_token'][] = $string;
+        } catch (Exception $e) {
+            throw $e;
         }
     }
 }
 add_action('init', 'jmart_user_authenticate');
 
-function getToken() {
-    return implode('%', $_SESSION['access_token']);
+// Register route for logout user
+function logoutUserRoute()
+{
+    register_rest_route('jmart', '/logout', array(
+        'methods' => 'GET',
+        'callback' => 'logoutUser',
+    ));
 }
 
-// Store product on Database after check if there exists
-//function productStore($data)
-//{
-//    global $wpdb;
-//
-//    $existent = findProduct($data->id);
-//    if ($existent)
-//        throw new Exception('Produto já cadastrado!');
-//
-//    $wpdb->insert('jmart_products', [
-//        'hotmart_id' => $data->id,
-//        'name' => $data->name,
-//        'category' => $data->category->name,
-//        'status' => 1
-//    ], ['%s', '%s', '%s']
-//    );
-//
-//    return $data;
-//}
+add_action('rest_api_init', 'logoutUserRoute');
+
+// Method called by registered routed for store product
+function logoutUser()
+{
+    unset($_SESSION['access_token']);
+    return 'logout';
+}
+
+// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
+function getToken() {
+    $token = null;
+    if(isset($_SESSION['access_token']))
+        $token = implode('', $_SESSION['access_token']);
+    return $token;
+}
 
 function products_list($atts)
 {
@@ -149,7 +152,6 @@ function products_list($atts)
 
     return displayProducts($category);
 }
-
 add_shortcode('products', 'products_list');
 
 function displayProducts($category)
@@ -160,19 +162,13 @@ function displayProducts($category)
     include("products.php");
 }
 
-
-
-
-
 function topBar()
 {
     return include("topBar.php");
 }
-
 add_shortcode('top_bar', 'topBar');
 
-
-// Find for product by IDl
+// Find for product by ID
 function findProduct($id)
 {
     global $wpdb;
@@ -189,12 +185,14 @@ function config($key)
 }
 
 function get_user() {
-    $token = getToken();
-    $header = ['headers' => ['Authorization' => 'Bearer ' . $token]];
-    $request = wp_remote_get('https://api-hot-connect.hotmart.com/user/rest/v2/me', $header);
-    $user = wp_remote_retrieve_body($request);
+    try {
+        $token = getToken();
+        $header = ['headers' => ['Authorization' => 'Bearer ' . $token]];
+        $request = wp_remote_get('https://api-hot-connect.hotmart.com/user/rest/v2/me', $header);
+        $user = wp_remote_retrieve_body($request);
+    } catch (Exception $e) {
+        throw $e;
+    }
 
     return json_decode($user);
 }
-
-include "scripts.php";

@@ -1,3 +1,23 @@
+$spacings: (0:0, 1:2, 2:3, 3:4, 4:4, 5:10);
+
+@each $key, $val in $spacings {
+  .p-#{$key} { padding: #{$val}px }
+  .pt-#{$key} { padding-top: #{$val}px }
+  .pb-#{$key} { padding-bottom: #{$val}px }
+  .py-#{$key} { padding-top: #{$val}px; padding-bottom: #{$val}px }
+  .ph-#{$key} { padding-left: #{$val}px; padding-right: #{$val}px }
+  .pl-#{$key} { padding-left: #{$val}px }
+  .pr-#{$key} { padding-right: #{$val}px }
+
+  .m-#{$key} { margin: #{$val}px }
+  .mt-#{$key} { margin-top: #{$val}px }
+  .mb-#{$key} { margin-bottom: #{$val}px }
+  .my-#{$key} { margin-top: #{$val}px; margin-bottom: #{$val}px }
+  .mh-#{$key} { margin-left: #{$val}px; margin-right: #{$val}px }
+  .ml-#{$key} { margin-left: #{$val}px }
+  .mr-#{$key} { margin-right: #{$val}px }
+}
+
 #wpwrap {
   background: #f1f1f1 !important;
 }
@@ -29,3 +49,58 @@ table th {
 .bg-theme {
   background: #e25e5e;
 }
+
+#topBar {
+  position:relative;
+  background: #f5e7dd;
+  padding: 5px;
+
+  .btn {
+    padding: 5px;
+    font-size: 14px;
+    border: none;
+    color: white;
+    border-radius: .3em;
+    text-transform: none;
+  }
+
+  .btn-outline-light {
+    background: transparent;
+    border: 2px solid #c9ae99;
+    color: #c9ae99;
+    text-transform: uppercase;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .dropdown {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    height: 2em;
+    border-radius: .3em;
+    transition: 300ms;
+
+    .btn {
+      background: #e25e5e;
+    }
+
+    &:hover {
+      height: auto;
+      transition: 300ms;
+    }
+
+    .dropdown-menu {
+      background: white;
+      padding: 4px;
+      border-radius: .3em;
+      box-shadow: 2px 2px 5px rgba(0,0,0,.04);
+    }
+  }
+}
+.text-right {
+  text-align: right;
+}
+

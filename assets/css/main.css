@@ -1,3 +1,363 @@
+.p-0 {
+  padding: 0px;
+}
+
+.pt-0 {
+  padding-top: 0px;
+}
+
+.pb-0 {
+  padding-bottom: 0px;
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.ph-0 {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.pl-0 {
+  padding-left: 0px;
+}
+
+.pr-0 {
+  padding-right: 0px;
+}
+
+.m-0 {
+  margin: 0px;
+}
+
+.mt-0 {
+  margin-top: 0px;
+}
+
+.mb-0 {
+  margin-bottom: 0px;
+}
+
+.my-0 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.mh-0 {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.ml-0 {
+  margin-left: 0px;
+}
+
+.mr-0 {
+  margin-right: 0px;
+}
+
+.p-1 {
+  padding: 2px;
+}
+
+.pt-1 {
+  padding-top: 2px;
+}
+
+.pb-1 {
+  padding-bottom: 2px;
+}
+
+.py-1 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.ph-1 {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.pl-1 {
+  padding-left: 2px;
+}
+
+.pr-1 {
+  padding-right: 2px;
+}
+
+.m-1 {
+  margin: 2px;
+}
+
+.mt-1 {
+  margin-top: 2px;
+}
+
+.mb-1 {
+  margin-bottom: 2px;
+}
+
+.my-1 {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.mh-1 {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.ml-1 {
+  margin-left: 2px;
+}
+
+.mr-1 {
+  margin-right: 2px;
+}
+
+.p-2 {
+  padding: 3px;
+}
+
+.pt-2 {
+  padding-top: 3px;
+}
+
+.pb-2 {
+  padding-bottom: 3px;
+}
+
+.py-2 {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.ph-2 {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.pl-2 {
+  padding-left: 3px;
+}
+
+.pr-2 {
+  padding-right: 3px;
+}
+
+.m-2 {
+  margin: 3px;
+}
+
+.mt-2 {
+  margin-top: 3px;
+}
+
+.mb-2 {
+  margin-bottom: 3px;
+}
+
+.my-2 {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.mh-2 {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.ml-2 {
+  margin-left: 3px;
+}
+
+.mr-2 {
+  margin-right: 3px;
+}
+
+.p-3 {
+  padding: 4px;
+}
+
+.pt-3 {
+  padding-top: 4px;
+}
+
+.pb-3 {
+  padding-bottom: 4px;
+}
+
+.py-3 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.ph-3 {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.pl-3 {
+  padding-left: 4px;
+}
+
+.pr-3 {
+  padding-right: 4px;
+}
+
+.m-3 {
+  margin: 4px;
+}
+
+.mt-3 {
+  margin-top: 4px;
+}
+
+.mb-3 {
+  margin-bottom: 4px;
+}
+
+.my-3 {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.mh-3 {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.ml-3 {
+  margin-left: 4px;
+}
+
+.mr-3 {
+  margin-right: 4px;
+}
+
+.p-4 {
+  padding: 4px;
+}
+
+.pt-4 {
+  padding-top: 4px;
+}
+
+.pb-4 {
+  padding-bottom: 4px;
+}
+
+.py-4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.ph-4 {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.pl-4 {
+  padding-left: 4px;
+}
+
+.pr-4 {
+  padding-right: 4px;
+}
+
+.m-4 {
+  margin: 4px;
+}
+
+.mt-4 {
+  margin-top: 4px;
+}
+
+.mb-4 {
+  margin-bottom: 4px;
+}
+
+.my-4 {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.mh-4 {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.ml-4 {
+  margin-left: 4px;
+}
+
+.mr-4 {
+  margin-right: 4px;
+}
+
+.p-5 {
+  padding: 10px;
+}
+
+.pt-5 {
+  padding-top: 10px;
+}
+
+.pb-5 {
+  padding-bottom: 10px;
+}
+
+.py-5 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.ph-5 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.pl-5 {
+  padding-left: 10px;
+}
+
+.pr-5 {
+  padding-right: 10px;
+}
+
+.m-5 {
+  margin: 10px;
+}
+
+.mt-5 {
+  margin-top: 10px;
+}
+
+.mb-5 {
+  margin-bottom: 10px;
+}
+
+.my-5 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mh-5 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ml-5 {
+  margin-left: 10px;
+}
+
+.mr-5 {
+  margin-right: 10px;
+}
+
 #wpwrap {
   background: #f1f1f1 !important;
 }
@@ -30,6 +390,54 @@ table th {
 
 .bg-theme {
   background: #e25e5e;
+}
+
+#topBar {
+  position: relative;
+  background: #f5e7dd;
+  padding: 5px;
+}
+#topBar .btn {
+  padding: 5px;
+  font-size: 14px;
+  border: none;
+  color: white;
+  border-radius: 0.3em;
+  text-transform: none;
+}
+#topBar .btn-outline-light {
+  background: transparent;
+  border: 2px solid #c9ae99;
+  color: #c9ae99;
+  text-transform: uppercase;
+}
+#topBar .btn-outline-light:hover {
+  text-decoration: none;
+}
+#topBar .dropdown {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  height: 2em;
+  border-radius: 0.3em;
+  transition: 300ms;
+}
+#topBar .dropdown .btn {
+  background: #e25e5e;
+}
+#topBar .dropdown:hover {
+  height: auto;
+  transition: 300ms;
+}
+#topBar .dropdown .dropdown-menu {
+  background: white;
+  padding: 4px;
+  border-radius: 0.3em;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.text-right {
+  text-align: right;
 }
 
 /*# sourceMappingURL=main.css.map */

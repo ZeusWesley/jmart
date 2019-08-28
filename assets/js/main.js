@@ -15,3 +15,11 @@ $(document).on('submit', '#product_store', function(e) {
         swal('Erro!', error, 'error');
     });
 });
+
+$(document).on('click', '#logout', function() {
+    $.get(config.baseUrl + '/wp-json/jmart/logout').done((res) => {
+        location.reload();
+    }).fail((error) => {
+        console.log(error);
+    });
+});

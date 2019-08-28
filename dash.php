@@ -1,3 +1,5 @@
+<?php require "styles.php"?>
+
 <div class="container-fluid mt-5">
     <ul class="nav nav-tabs mb-0 pb-0" id="myTab" role="tablist">
         <li class="nav-item">
@@ -118,3 +120,5 @@
         </div>
     </div>
 </div>
+
+<?php require "scripts.php"?>
