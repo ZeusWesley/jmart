@@ -10,15 +10,11 @@
         </div>
         <div class="column one-second text-right my-0">
             <?php if (isset(get_user()->name) && !empty(get_user()->name)): ?>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle m-0" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Bem-vindo(a), <?php echo get_user()->name ?>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" id="logout">Sair</a>
-                    </div>
-                </div>
+                <button class="btn btn-theme dropdown-toggle m-0" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Bem-vindo(a), <strong><?php echo explode(' ', get_user()->name)[0] ?></strong>
+                </button>
+                <a class="dropdown-item" href="#" id="logout">Sair</a>
             <?php else: ?>
                 <div class="pt-3">
                     <a href="<?php echo 'https://api-sec-vlc.hotmart.com/security/oauth/authorize?response_type=code&client_id=' . config('CLIENT_ID')->value . '&redirect_uri=' . site_url() ?>"

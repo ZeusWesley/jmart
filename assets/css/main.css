@@ -392,6 +392,12 @@ table th {
   background: #e25e5e;
 }
 
+.btn-theme {
+  color: white;
+  background: #e25e5e;
+  border: 0;
+}
+
 #topBar {
   position: relative;
   background: #f5e7dd;
@@ -415,12 +421,13 @@ table th {
   text-decoration: none;
 }
 #topBar .dropdown {
-  position: absolute;
+  position: relative;
   display: inline-block;
   overflow: hidden;
   height: 2em;
   border-radius: 0.3em;
   transition: 300ms;
+  z-index: 100;
 }
 #topBar .dropdown .btn {
   background: #e25e5e;

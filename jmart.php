@@ -109,33 +109,33 @@ function jmart_user_authenticate()
 
             $parts = str_split($data->access_token, 128);
 
+            $_SESSION['access_token'] = [];
+
             foreach ($parts as $key => $string){
                 $_SESSION['access_token'][] = $string;
             }
-
         } catch (Exception $e) {
             throw $e;
         }
     }
 }
 add_action('init', 'jmart_user_authenticate');
-
 // Register route for logout user
-function logoutUserRoute()
+add_action('rest_api_init', function ()
 {
     register_rest_route('jmart', '/logout', array(
         'methods' => 'GET',
         'callback' => 'logoutUser',
     ));
-}
+});
 
-add_action('rest_api_init', 'logoutUserRoute');
-
-// Method called by registered routed for store product
 function logoutUser()
 {
     unset($_SESSION['access_token']);
-    return 'logout';
+    $response = new WP_REST_Response();
+    $response->set_status(200);
+
+    return $response;
 }
 
 // DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
@@ -188,8 +188,12 @@ function get_user() {
     try {
         $token = getToken();
         $header = ['headers' => ['Authorization' => 'Bearer ' . $token]];
+
         $request = wp_remote_get('https://api-hot-connect.hotmart.com/user/rest/v2/me', $header);
         $user = wp_remote_retrieve_body($request);
+
+        if($user->error)
+            throw new \Exception($user->error);
     } catch (Exception $e) {
         throw $e;
     }

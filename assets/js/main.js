@@ -16,9 +16,12 @@ $(document).on('submit', '#product_store', function(e) {
     });
 });
 
-$(document).on('click', '#logout', function() {
+$(document).on('click', '#logout', function(e) {
+    e.preventDefault();
+
     $.get(config.baseUrl + '/wp-json/jmart/logout').done((res) => {
         location.reload();
+        console.log(res);
     }).fail((error) => {
         console.log(error);
     });
