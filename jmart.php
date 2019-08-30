@@ -173,14 +173,16 @@ function formSearch()
 
 add_shortcode('search_form', 'formSearch');
 
-
-add_action('wp_ajax_myfilter', 'misha_filter_function'); // wp_ajax_{ACTION HERE}
-add_action('wp_ajax_nopriv_myfilter', 'misha_filter_function');
+add_action('rest_api_init', function () {
+    register_rest_route('jmart', '/post-search', array(
+        'methods' => 'GET',
+        'callback' => 'misha_filter_function',
+    ));
+});
 
 function misha_filter_function()
 {
-    $query = query_posts('cat=3');
-    include "post-list.php";
+    return require_once("post-list.php");
 }
 
 

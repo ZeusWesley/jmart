@@ -8,22 +8,14 @@ $translate['categories'] = mfn_opts_get('translate') ? mfn_opts_get('translate-c
 $translate['like'] = mfn_opts_get('translate') ? mfn_opts_get('translate-like', 'Do you like it?') : __('Do you like it?', 'betheme');
 $translate['readmore'] = mfn_opts_get('translate') ? mfn_opts_get('translate-readmore', 'Read more') : __('Read more', 'betheme');
 
-if (!$query) $query = $wp_query;
-if (!$style) {
-    if ($_GET && key_exists('mfn-b', $_GET)) {
-        $style = esc_html($_GET['mfn-b']); // demo
-    } else {
-        $style = mfn_opts_get('blog-layout', 'classic');
-    }
-}
+
+$query = new WP_Query( 'cat=5' );
 
 if ($query->have_posts()) {
     while ($query->have_posts()) {
         $query->the_post();
 
-
         // classes
-
         $post_class = array('post-item', 'isotope-item', 'clearfix');
         if (!mfn_post_thumbnail(get_the_ID())) $post_class[] = 'no-img';
         if (post_password_required()) $post_class[] = 'no-img';
@@ -192,8 +184,6 @@ if ($query->have_posts()) {
 
         // title -------------------------------------
         $output .= '<div class="post-title">';
-
-        var_dump(get_the_category_list());
 
         if (get_post_format() == 'quote') {
             // quote ----------------------------
