@@ -10,7 +10,9 @@
  * License: Qualquer uma ai, por enquanto!
 *
 */
-function startBagaca() {}
+function startBagaca()
+{
+}
 
 add_action('init', 'startBagaca');
 
@@ -87,7 +89,7 @@ function productStore($data)
 // Method called by registered routed for store product
 function jmart_user_authenticate()
 {
-    $sessdir = dirname(dirname(__FILE__)).'/session_dir';
+    $sessdir = dirname(dirname(__FILE__)) . '/session_dir';
     ini_set('session.save_path', $sessdir);
 
     session_start();
@@ -111,7 +113,7 @@ function jmart_user_authenticate()
 
             $_SESSION['access_token'] = [];
 
-            foreach ($parts as $key => $string){
+            foreach ($parts as $key => $string) {
                 $_SESSION['access_token'][] = $string;
             }
 
@@ -121,30 +123,32 @@ function jmart_user_authenticate()
         }
     }
 }
+
 add_action('init', 'jmart_user_authenticate');
 
 // Register route for logout user
-add_action('rest_api_init', function ()
-{
+add_action('rest_api_init', function () {
     register_rest_route('jmart', '/logout', array(
         'methods' => 'GET',
         'callback' => 'logoutUser',
     ));
 });
 
-function getToken() {
+function getToken()
+{
     $token = null;
-    if(isset($_SESSION['access_token']))
+    if (isset($_SESSION['access_token']))
         $token = implode('', $_SESSION['access_token']);
     return $token;
 }
 
 function products_list($atts)
 {
-    extract(shortcode_atts(['category' => 'any'], $atts, 'multilink'));
+//    extract(shortcode_atts(['category' => 'any'], $atts, 'multilink'));
 
-    return displayProducts($category);
+    return displayProducts();
 }
+
 add_shortcode('products', 'products_list');
 
 function displayProducts($category)
@@ -159,7 +163,26 @@ function topBar()
 {
     include("topBar.php");
 }
+
 add_shortcode('top_bar', 'topBar');
+
+function formSearch()
+{
+    include("search.php");
+}
+
+add_shortcode('search_form', 'formSearch');
+
+
+add_action('wp_ajax_myfilter', 'misha_filter_function'); // wp_ajax_{ACTION HERE}
+add_action('wp_ajax_nopriv_myfilter', 'misha_filter_function');
+
+function misha_filter_function()
+{
+    $query = query_posts('cat=3');
+    include "post-list.php";
+}
+
 
 // Find for product by ID
 function findProduct($id)
@@ -177,7 +200,8 @@ function config($key)
     return $configs[0];
 }
 
-function get_user() {
+function get_user()
+{
     return $_SESSION['user'];
 }
 
@@ -192,7 +216,8 @@ function logoutUser()
     return $response;
 }
 
-function hotmart_user() {
+function hotmart_user()
+{
     try {
         $token = getToken();
         $header = ['headers' => ['Authorization' => 'Bearer ' . $token]];
@@ -200,7 +225,7 @@ function hotmart_user() {
         $request = wp_remote_get('https://api-hot-connect.hotmart.com/user/rest/v2/me', $header);
         $user = wp_remote_retrieve_body($request);
 
-        if($user->error)
+        if ($user->error)
             throw new \Exception($user->error);
     } catch (Exception $e) {
         throw $e;
