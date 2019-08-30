@@ -114,12 +114,15 @@ function jmart_user_authenticate()
             foreach ($parts as $key => $string){
                 $_SESSION['access_token'][] = $string;
             }
+
+            $_SESSION['user'] = hotmart_user();
         } catch (Exception $e) {
             throw $e;
         }
     }
 }
 add_action('init', 'jmart_user_authenticate');
+
 // Register route for logout user
 add_action('rest_api_init', function ()
 {
@@ -129,16 +132,6 @@ add_action('rest_api_init', function ()
     ));
 });
 
-function logoutUser()
-{
-    unset($_SESSION['access_token']);
-    $response = new WP_REST_Response();
-    $response->set_status(200);
-
-    return $response;
-}
-
-// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
 function getToken() {
     $token = null;
     if(isset($_SESSION['access_token']))
@@ -164,7 +157,7 @@ function displayProducts($category)
 
 function topBar()
 {
-    return include("topBar.php");
+    include("topBar.php");
 }
 add_shortcode('top_bar', 'topBar');
 
@@ -185,6 +178,21 @@ function config($key)
 }
 
 function get_user() {
+    return $_SESSION['user'];
+}
+
+// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
+function logoutUser()
+{
+    unset($_SESSION['access_token']);
+    unset($_SESSION['user']);
+    $response = new WP_REST_Response();
+    $response->set_status(200);
+
+    return $response;
+}
+
+function hotmart_user() {
     try {
         $token = getToken();
         $header = ['headers' => ['Authorization' => 'Bearer ' . $token]];
