@@ -127,12 +127,27 @@ function jmart_user_authenticate()
 add_action('init', 'jmart_user_authenticate');
 
 // Register route for logout user
-add_action('rest_api_init', function () {
+add_action('rest_api_init', function () {\
+    register_rest_route('jmart', '/product/store', array(
+    'methods' => 'POST',
+    'callback' => 'jmart_store_product',
+));
     register_rest_route('jmart', '/logout', array(
         'methods' => 'GET',
         'callback' => 'logoutUser',
     ));
 });
+
+// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
+function logoutUser()
+{
+    unset($_SESSION['access_token']);
+    unset($_SESSION['user']);
+    $response = new WP_REST_Response();
+    $response->set_status(200);
+
+    return $response;
+}
 
 function getToken()
 {
@@ -205,17 +220,6 @@ function config($key)
 function get_user()
 {
     return $_SESSION['user'];
-}
-
-// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
-function logoutUser()
-{
-    unset($_SESSION['access_token']);
-    unset($_SESSION['user']);
-    $response = new WP_REST_Response();
-    $response->set_status(200);
-
-    return $response;
 }
 
 function hotmart_user()
