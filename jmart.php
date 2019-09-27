@@ -43,6 +43,25 @@ function my_custom_menu_page()
 }
 
 // Register route for store product on database
+function signup()
+{
+    register_rest_route('jmart', '/signup', array(
+        'methods' => 'POST',
+        'callback' => 'jmart_signup',
+    ));
+}
+add_action('rest_api_init', 'signup');
+
+function jmart_signup() {
+    $header = ['headers' => ['Authorization' => 'Bearer ' . config('ACCESS_TOKEN')->value]];
+
+    $response = wp_remote_get('https://api-hot-connect.hotmart.com/product/rest/v2/' . $data->get_params()['id'], $header);
+    $request = wp_remote_retrieve_body($response);
+
+    return $request;
+}
+
+// Register route for store product on database
 function jmart_store_product_api()
 {
     register_rest_route('jmart', '/product/store', array(
@@ -127,27 +146,12 @@ function jmart_user_authenticate()
 add_action('init', 'jmart_user_authenticate');
 
 // Register route for logout user
-add_action('rest_api_init', function () {\
-    register_rest_route('jmart', '/product/store', array(
-    'methods' => 'POST',
-    'callback' => 'jmart_store_product',
-));
+add_action('rest_api_init', function () {
     register_rest_route('jmart', '/logout', array(
         'methods' => 'GET',
         'callback' => 'logoutUser',
     ));
 });
-
-// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
-function logoutUser()
-{
-    unset($_SESSION['access_token']);
-    unset($_SESSION['user']);
-    $response = new WP_REST_Response();
-    $response->set_status(200);
-
-    return $response;
-}
 
 function getToken()
 {
@@ -178,8 +182,13 @@ function topBar()
 {
     include("topBar.php");
 }
-
 add_shortcode('top_bar', 'topBar');
+
+function signupForm()
+{
+    include("authenticate.php");
+}
+add_shortcode('signup_form', 'signupForm');
 
 function formSearch()
 {
@@ -220,6 +229,17 @@ function config($key)
 function get_user()
 {
     return $_SESSION['user'];
+}
+
+// DESTROY USER ACCESS TOKEN VARIABLE FROM SESSION
+function logoutUser()
+{
+    unset($_SESSION['access_token']);
+    unset($_SESSION['user']);
+    $response = new WP_REST_Response();
+    $response->set_status(200);
+
+    return $response;
 }
 
 function hotmart_user()
