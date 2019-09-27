@@ -52,8 +52,9 @@
         var data = $(this).serialize();
 
         $.post($(this).attr('action'), data).done(res => {
-            if(JSON.parse(res).error != undefined) {
-                swal('Atenção!', 'Ocorreu um erro ao tentar fazer o cadastro. Erro: ' + JSON.parse(res).error, 'error');
+            if(JSON.parse(res).error) {
+                swal('Atenção!', 'Ocorreu um erro ao tentar fazer o cadastro. Erro: ' + JSON.parse(res).error +
+                    '; ' + JSON.parse(res).error_description, 'error');
                 return;
             }
 

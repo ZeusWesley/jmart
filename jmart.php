@@ -53,7 +53,15 @@ function signup()
 add_action('rest_api_init', 'signup');
 
 function jmart_signup() {
-    $data = ['body' => json_encode($_POST), 'headers' => ['Authorization' => 'Bearer ' . config('ACCESS_TOKEN')->value]];
+    $data = [
+        'headers' => [
+            'Authorization' => 'Bearer ' . config('ACCESS_TOKEN')->value,
+            'Content-Type' => 'application/json; charset=utf-8'
+        ],
+        'body' => json_encode($_POST),
+        'method'      => 'POST',
+        'data_format' => 'body',
+    ];
 
     $response = wp_remote_post('https://api-hot-connect.hotmart.com/user/rest/v2/signup', $data);
     $request = wp_remote_retrieve_body($response);

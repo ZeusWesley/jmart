@@ -447,4 +447,21 @@ table th {
   text-align: right;
 }
 
+@media screen and (max-width: 767px) {
+  #topBar #social-icons, #topBar #welcome-message, #categories-filter {
+    display: none;
+  }
+
+  #topBar .column:nth-child(2) .column:nth-child(2) {
+    margin-top: -28px !important;
+  }
+
+  #topBar .column:nth-child(2) .column:nth-child(1) {
+    width: 41vw !important;
+  }
+}
+.widget-area:before {
+  visibility: hidden;
+}
+
 /*# sourceMappingURL=main.css.map */
