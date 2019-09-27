@@ -53,6 +53,9 @@
 
         $.post($(this).attr('action'), data).done(res => {
             if(JSON.parse(res).error) {
+                if (JSON.parse(res).error == 'invalid_token')
+                    newAccessToken();
+
                 swal('Atenção!', 'Ocorreu um erro ao tentar fazer o cadastro. Erro: ' + JSON.parse(res).error +
                     '; ' + JSON.parse(res).error_description, 'error');
                 return;
@@ -68,4 +71,17 @@
             console.log(JSON.parse(error));
         });
     });
+
+    function newAccessToken() {
+        $.get(config.baseUrl + '/wp-json/jmart/access-token').done(res => {
+            if(res == 'success') {
+                $('#jmart_signup_form').submit();
+            } else {
+                swal('Erro!', 'Ocorreu um erro ao tentar gerar um novo token de acesso.', 'error');
+            }
+        }).fail(error => {
+            swal('Erro!', 'Ocorreu um erro ao tentar gerar um novo token de acesso.', 'error');
+            console.log(error);
+        });
+    }
 </script>

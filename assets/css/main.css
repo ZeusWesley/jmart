@@ -464,4 +464,35 @@ table th {
   visibility: hidden;
 }
 
+.dropdown-jmart {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-jmart-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 9999;
+}
+
+.dropdown-jmart:hover .dropdown-jmart-content {
+  display: block;
+}
+
+.dropdown-jmart-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-jmart-content a:hover {
+  background-color: #f1f1f1;
+}
+
 /*# sourceMappingURL=main.css.map */

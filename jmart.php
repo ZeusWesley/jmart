@@ -42,7 +42,6 @@ function my_custom_menu_page()
     include("dash.php");
 }
 
-// Register route for store product on database
 function signup()
 {
     register_rest_route('jmart', '/signup', array(
@@ -67,6 +66,45 @@ function jmart_signup() {
     $request = wp_remote_retrieve_body($response);
 
     return $request;
+}
+
+function accessToken()
+{
+    register_rest_route('jmart', '/access-token', array(
+        'methods' => 'GET',
+        'callback' => 'generateAccessToken',
+    ));
+}
+add_action('rest_api_init', 'accessToken');
+
+function generateAccessToken() {
+    $data = [
+        'headers' => [
+            'Authorization' => 'Basic ' . config('BASIC')->value,
+            'Content-Type' => 'application/json; charset=utf-8'
+        ],
+        'body' => [
+            'client_id' => config('CLIENT_ID')->value,
+            'client_secret' => config('CLIENT_SECRET')->value
+        ],
+        'method'      => 'POST',
+        'data_format' => 'body',
+    ];
+
+    $response = wp_remote_post('https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials', $data);
+    $request = wp_remote_retrieve_body($response);
+
+    global $wpdb;
+
+    $existent = findProduct($data->id);
+    if ($existent)
+        throw new Exception('Produto já cadastrado!');
+
+    $wpdb->update('jmart_configs', [
+        'value' => json_decode($request)->access_token,
+    ], ['key_name' => 'ACCESS_TOKEN']);
+
+    return 'success';
 }
 
 // Register route for store product on database
