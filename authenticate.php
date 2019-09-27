@@ -41,7 +41,8 @@
     $(document).on('submit', '#jmart_signup_form', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var master = $('input[name=password]').length;
+
+        var master = $('input[name=password]').val().length;
 
         if(master < 8) {
             swal('Atenção!', 'Sua senha deve conter no mínimo 8 caracteres.', 'error');
@@ -51,14 +52,19 @@
         var data = $(this).serialize();
 
         $.post($(this).attr('action'), data).done(res => {
+            if(JSON.parse(res).error != undefined) {
+                swal('Atenção!', 'Ocorreu um erro ao tentar fazer o cadastro. Erro: ' + JSON.parse(res).error, 'error');
+                return;
+            }
+
             swal(
                 'Sucesso!',
                 'Cadastro feito com sucesso! Agora você pode realizar a compra dos produtos do Clube Saudável.',
                 'success'
             );
         }).fail(error => {
-            alert('Um erro foi gerado enquanto tentava ser feito o cadastro. \n \n \n' + error);
-            console.log(error);
+            alert('Um erro foi gerado enquanto tentava ser feito o cadastro. \n \n \n' + JSON.parse(error));
+            console.log(JSON.parse(error));
         });
     });
 </script>
