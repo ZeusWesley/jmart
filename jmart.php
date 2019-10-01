@@ -78,31 +78,35 @@ function accessToken()
 add_action('rest_api_init', 'accessToken');
 
 function generateAccessToken() {
-    $data = [
-        'headers' => [
-            'Authorization' => 'Basic ' . config('BASIC')->value,
-            'Content-Type' => 'application/json; charset=utf-8'
-        ],
-        'body' => [
-            'client_id' => config('CLIENT_ID')->value,
-            'client_secret' => config('CLIENT_SECRET')->value
-        ],
-        'method'      => 'POST',
-        'data_format' => 'body',
-    ];
+    try {
+        $data = [
+            'headers' => [
+                'Authorization' => 'Basic ' . config('BASIC')->value,
+                'Content-Type' => 'application/json; charset=utf-8'
+            ],
+            'body' => [
+                'client_id' => config('CLIENT_ID')->value,
+                'client_secret' => config('CLIENT_SECRET')->value
+            ],
+            'method'      => 'POST',
+            'data_format' => 'body',
+        ];
 
-    $response = wp_remote_post('https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials', $data);
-    $request = wp_remote_retrieve_body($response);
+        $response = wp_remote_post('https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials', $data);
+        $request = wp_remote_retrieve_body($response);
 
-    global $wpdb;
+        global $wpdb;
 
-    $existent = findProduct($data->id);
-    if ($existent)
-        throw new Exception('Produto já cadastrado!');
+        $existent = findProduct($data->id);
+        if ($existent)
+            throw new Exception('Produto já cadastrado!');
 
-    $wpdb->update('jmart_configs', [
-        'value' => json_decode($request)->access_token,
-    ], ['key_name' => 'ACCESS_TOKEN']);
+        $wpdb->update('jmart_configs', [
+            'value' => json_decode($request)->access_token,
+        ], ['key_name' => 'ACCESS_TOKEN']);
+    } catch (Exception $e) {
+        throw $e;
+    }
 
     return 'success';
 }
@@ -183,6 +187,7 @@ function jmart_user_authenticate()
             }
 
             $_SESSION['user'] = hotmart_user();
+            checkSubscriber($_SESSION['user']->email);
         } catch (Exception $e) {
             throw $e;
         }
@@ -226,6 +231,7 @@ function displayProducts($category)
 
 function topBar()
 {
+//    var_dump(checkSubscriber(get_user()->email));exit;
     include("topBar.php");
 }
 add_shortcode('top_bar', 'topBar');
@@ -255,6 +261,38 @@ function misha_filter_function()
     return require_once("post-list.php");
 }
 
+function getSubscribers() {
+    $data = [
+        'headers' => ['Authorization' => 'Bearer ' . config('ACCESS_TOKEN')->value]
+    ];
+
+    $response = wp_remote_get('https://api-hot-connect.hotmart.com/subscriber/rest/v2', $data);
+    $request = wp_remote_retrieve_body($response);
+
+    if ($request->error && $request->error == 'invalid_token') {
+        if(generateAccessToken() == 'success')
+            getSubscribers();
+        else
+            throw new \Exception($request->error);
+    }
+
+    return $request;
+}
+
+function checkSubscriber($reference) {
+    $subscribers = json_decode(getSubscribers());
+
+    foreach($subscribers->data as $item) {
+        if($item->subscriber->email == $reference)
+            $_SESSION['subscription'] = $item->plan;
+    }
+
+    if($_SESSION['subscription'] == null)
+        return [];
+
+    return $_SESSION['subscription'];
+}
+
 
 // Find for product by ID
 function findProduct($id)
@@ -282,6 +320,7 @@ function logoutUser()
 {
     unset($_SESSION['access_token']);
     unset($_SESSION['user']);
+    unset($_SESSION['subscription']);
     $response = new WP_REST_Response();
     $response->set_status(200);
 
@@ -297,8 +336,9 @@ function hotmart_user()
         $request = wp_remote_get('https://api-hot-connect.hotmart.com/user/rest/v2/me', $header);
         $user = wp_remote_retrieve_body($request);
 
-        if ($user->error)
+        if ($user->error) {
             throw new \Exception($user->error);
+        }
     } catch (Exception $e) {
         throw $e;
     }

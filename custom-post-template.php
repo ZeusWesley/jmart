@@ -9,8 +9,7 @@ get_header();
 ?>
     <section id="primary" class="content-area">
         <main id="main" class="site-main">
-
-            <?php if (isset(get_user()->name) && !empty(get_user()->name)): ?>
+            <?php if (isset(get_user()->name) && !empty(checkSubscriber(get_user()->email))): ?>
                 <?php
                 // prev & next post -------------------
                 $single_post_nav = array(

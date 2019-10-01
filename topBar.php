@@ -16,11 +16,29 @@
 
             <div class="column one-second my-0">
                 <?php if (isset(get_user()->name) && !empty(get_user()->name)): ?>
-                    <button class="btn btn-theme m-0" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span id="welcome-message">Bem-vindo(a),</span> <strong><?php echo explode(' ', get_user()->name)[0] ?></strong>
-                    </button>
-                    <a class="dropdown-item" href="#" id="logout">Sair</a>
+                    <div class="dropdown-jmart">
+                        <button class="btn btn-theme m-0" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span id="welcome-message">Bem-vindo(a),</span> <strong><?php echo explode(' ', get_user()->name)[0] ?></strong>
+                        </button>
+
+                        <div class="dropdown-jmart-content">
+                            <?php if(!checkSubscriber(get_user()->email)):?>
+                                <small style="font-size: 12px">
+                                    <strong>
+                                        Não identificamos sua assinatura no Clube saudável.
+                                        Se você fez o pagamento em boleto, aguarde até o compensamento do mesmo.
+                                    </strong>
+                                </small>
+                            <?php else:?>
+                                <small style="font-size: 12px">
+                                    <strong>Sua assinatura:</strong><br>
+                                    <?php echo checkSubscriber(get_user()->email)->name?>
+                                </small>
+                            <?php endif;?>
+                            <a class="dropdown-item" href="#" id="logout" style="color: #ff5566"><strong>Sair</strong></a>
+                        </div>
+                    </div>
                 <?php else: ?>
                     <div class="dropdown-jmart">
                         <button class="btn btn-theme m-0">Acessar</button>
